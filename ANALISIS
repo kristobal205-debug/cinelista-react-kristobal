@@ -1,0 +1,26 @@
+# Análisis de elementos de React — CineLista
+
+## Tabla de elementos del framework
+
+| Elemento de React | ¿Dónde lo uso en este problema? | ¿Por qué es el adecuado? |
+|---|---|---|
+| Componente | Divido la app en tres componentes: `PeliculaCard`, `ListaPeliculas` y `FiltroClasificacion`. Cada uno tiene una responsabilidad única. | Permite separar la interfaz en piezas reutilizables e independientes, facilitando el mantenimiento y la lectura del código. |
+| JSX | En cada componente uso JSX para describir la estructura visual: tarjetas, botones, listas de horarios y mensajes condicionales. | JSX combina la lógica JavaScript con la estructura HTML en un mismo lugar, haciendo el código más claro que manipular el DOM directamente. |
+| Props | `ListaPeliculas` recibe el array `peliculas` desde `App`. `PeliculaCard` recibe `titulo`, `genero`, `duracion`, `clasificacion`, `sinopsis`, `horarios` y `funcionHoy`. `FiltroClasificacion` recibe `filtroActual` y `onFiltroChange`. | Las props permiten pasar datos de un componente padre a sus hijos sin que estos necesiten acceder a fuentes externas, manteniendo el flujo de datos en una sola dirección. |
+| Estado (useState) | En `App.jsx` uso dos estados: `filtro` para guardar la clasificación seleccionada y `busqueda` para guardar el texto ingresado por el usuario. | El estado permite que la interfaz reaccione a las acciones del usuario. Cuando cambia el filtro o la búsqueda, React re-renderiza automáticamente solo lo necesario. |
+| Renderizado de listas (.map + key) | En `ListaPeliculas` recorro el array con `.map()` para renderizar un `PeliculaCard` por cada película. Uso `pelicula.id` como `key`. | `.map()` es la forma estándar de generar elementos dinámicos en React. La prop `key` con un id único permite a React identificar qué elementos cambiaron y actualizar el DOM de forma eficiente. |
+| Renderizado condicional | En `App.jsx` muestro el mensaje "No hay películas que coincidan" cuando `peliculasFiltradas.length === 0`. En `PeliculaCard` muestro la etiqueta "HOY" solo cuando `funcionHoy` es `true`. | El renderizado condicional evita mostrar información incorrecta o vacía al usuario, adaptando la interfaz al estado actual de los datos. |
+
+---
+
+## Preguntas de análisis
+
+### 1. ¿Qué ventaja tiene dividir la cartelera en componentes?
+
+Dividir la aplicación en componentes permite que cada parte tenga una responsabilidad clara y acotada. Por ejemplo, `PeliculaCard` solo se encarga de mostrar los datos de una película, sin importarle cómo se filtra la lista. Esto hace que el código sea más fácil de leer, mantener y corregir: si hay un error en la tarjeta, sé exactamente dónde buscarlo. Además, si en el futuro se necesita mostrar una película en otro contexto, el componente ya está listo para reutilizarse sin reescribir código.
+
+### 2. ¿Qué diferencia hay entre props y estado?
+
+Las **props** son datos que un componente recibe desde afuera y no puede modificar por sí mismo. Son de solo lectura y fluyen del padre al hijo. En esta aplicación, `titulo` y `clasificacion` son props que `App` le entrega a `PeliculaCard`: la tarjeta los muestra pero no los cambia.
+
+El **estado** es datos que el propio componente controla y puede modificar. Cuando el estado cambia, React actualiza la interfaz automáticamente. En esta aplicación, `filtro` y `busqueda` son estados que viven en `App`: cuando el usuario hace clic en un botón o escribe en el buscador, el estado cambia y la lista se actualiza en pantalla.
